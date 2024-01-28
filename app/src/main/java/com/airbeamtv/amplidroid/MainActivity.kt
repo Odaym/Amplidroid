@@ -21,8 +21,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import com.airbeamtv.amplidroid.ui.theme.AmplidroidTheme
+import com.amplifyframework.auth.AuthUserAttributeKey
+import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
+import com.amplifyframework.auth.options.AuthSignUpOptions
+import com.amplifyframework.auth.result.AuthSessionResult
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.datastore.generated.model.Priority
 import com.amplifyframework.datastore.generated.model.Todo
@@ -60,6 +63,30 @@ class MainActivity : ComponentActivity() {
 
                             openAlertDialog.value = true
                         }
+
+                        FetchAuthSessionButton {
+                            dialogText.value = it
+
+                            openAlertDialog.value = true
+                        }
+
+                        GetAccessCredentialsButton {
+                            dialogText.value = it
+
+                            openAlertDialog.value = true
+                        }
+
+                        RegisterUserPhoneNumber {
+                            dialogText.value = it
+
+                            openAlertDialog.value = true
+                        }
+
+                        SignInUser {
+                            dialogText.value = it
+
+                            openAlertDialog.value = true
+                        }
                     }
 
                     if (openAlertDialog.value) {
@@ -75,11 +102,96 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-private fun fetchAuthSession(){
-    Amplify.Auth.fetchAuthSession(
-        { Log.i("AmplifyQuickstart", "Auth session = $it") },
-        { error -> Log.e("AmplifyQuickstart", "Failed to fetch auth session", error) }
-    )
+@Composable
+fun FetchAuthSessionButton(
+    onSessionFetched: (String) -> Unit
+) {
+    Button(onClick = {
+        Amplify.Auth.fetchAuthSession(
+            { onSessionFetched(if (it.isSignedIn) "Signed in!" else "Not signed in!") },
+            { error -> Log.e("AmplifyQuickstart", "Failed to fetch auth session", error) }
+        )
+    }) {
+        Text(text = "Fetch Auth Session")
+    }
+}
+
+@Composable
+fun RegisterUserPhoneNumber(
+    onUserRegistered: (String) -> Unit
+) {
+    Button(onClick = {
+        val options = AuthSignUpOptions.builder()
+            .userAttribute(AuthUserAttributeKey.phoneNumber(), "+31629378085")
+            .build()
+
+        Amplify.Auth.signUp("+31629378085", "Password123", options,
+            {
+                val result = StringBuilder()
+
+                result.append(it.userId.toString())
+                result.append("\n")
+                result.append("Next step -> ${it.nextStep.signUpStep.name}")
+                onUserRegistered(result.toString())
+
+                Log.i("AuthQuickStart", "Sign up succeeded: $it")
+            },
+            { Log.e("AuthQuickStart", "Sign up failed", it) }
+        )
+    }) {
+        Text(text = "Register +31629378085")
+    }
+}
+
+@Composable
+fun GetAccessCredentialsButton(
+    onCredentialsReceived: (String) -> Unit
+) {
+    Button(onClick = {
+        Amplify.Auth.fetchAuthSession(
+            {
+                val session = it as AWSCognitoAuthSession
+                when (session.identityIdResult.type) {
+                    AuthSessionResult.Type.SUCCESS -> {
+                        onCredentialsReceived(session.identityIdResult.value ?: "ID was null")
+                        Log.i("AuthQuickStart", "IdentityId = ${session.identityIdResult.value}")
+                    }
+
+                    AuthSessionResult.Type.FAILURE ->
+                        Log.w(
+                            "AuthQuickStart",
+                            "IdentityId not found",
+                            session.identityIdResult.error
+                        )
+                }
+            },
+            { Log.e("AuthQuickStart", "Failed to fetch session", it) }
+        )
+    }) {
+        Text("Get Access Credentials")
+    }
+}
+
+@Composable
+fun SignInUser(
+    onUserSignedIn: (String) -> Unit
+) {
+    Button(onClick = {
+        Amplify.Auth.signIn("+31629378085", "Password123",
+            { result ->
+                if (result.isSignedIn) {
+                    onUserSignedIn("Succeeded")
+                    Log.i("AuthQuickstart", "Sign in succeeded")
+                } else {
+                    onUserSignedIn("Failed")
+                    Log.i("AuthQuickstart", "Sign in not complete")
+                }
+            },
+            { Log.e("AuthQuickstart", "Failed to sign in", it) }
+        )
+    }) {
+        Text(text = "Sign in user")
+    }
 }
 
 @Composable
@@ -93,9 +205,7 @@ fun AddTodoItemButton(
             .build()
 
         Amplify.DataStore.save(item,
-            {
-                onItemSaved(item)
-            },
+            { onItemSaved(item) },
             { Log.e("Tutorial", "Could not save item to DataStore", it) }
         )
     }) {
@@ -146,7 +256,7 @@ fun QueryTodoItemsButton(
 @Composable
 fun OperationStatusDialog(
     onConfirmation: () -> Unit,
-    dialogTitle: String,
+    dialogTitle: String? = null,
     dialogText: String
 ) {
     AlertDialog(
@@ -154,7 +264,9 @@ fun OperationStatusDialog(
             Icon(Icons.Filled.Check, contentDescription = null)
         },
         title = {
-            Text(text = dialogTitle)
+            if (dialogTitle != null) {
+                Text(text = dialogTitle)
+            }
         },
         text = {
             Text(text = dialogText)

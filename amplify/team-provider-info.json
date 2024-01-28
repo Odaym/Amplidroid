@@ -1,19 +1,22 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-amplidroid-dev-230137-authRole",
-      "UnauthRoleArn": "arn:aws:iam::342672818886:role/amplify-amplidroid-dev-230137-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::342672818886:role/amplify-amplidroid-dev-230137-authRole",
+      "AuthRoleName": "amplify-amplidroid-dev-212715-authRole",
+      "UnauthRoleArn": "arn:aws:iam::342672818886:role/amplify-amplidroid-dev-212715-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::342672818886:role/amplify-amplidroid-dev-212715-authRole",
       "Region": "eu-west-3",
-      "DeploymentBucketName": "amplify-amplidroid-dev-230137-deployment",
-      "UnauthRoleName": "amplify-amplidroid-dev-230137-unauthRole",
-      "StackName": "amplify-amplidroid-dev-230137",
-      "StackId": "arn:aws:cloudformation:eu-west-3:342672818886:stack/amplify-amplidroid-dev-230137/a52dd090-bd5f-11ee-a4d1-06ef2617eb8a",
-      "AmplifyAppId": "d1zad9wzui706d"
+      "DeploymentBucketName": "amplify-amplidroid-dev-212715-deployment",
+      "UnauthRoleName": "amplify-amplidroid-dev-212715-unauthRole",
+      "StackName": "amplify-amplidroid-dev-212715",
+      "StackId": "arn:aws:cloudformation:eu-west-3:342672818886:stack/amplify-amplidroid-dev-212715/a0d2ad60-be1b-11ee-bd73-0609c3b2d608",
+      "AmplifyAppId": "d3jdlhmeza4ilx"
     },
     "categories": {
+      "api": {
+        "amplidroid": {}
+      },
       "auth": {
-        "amplidroid89e65c1e": {}
+        "amplidroid58a98459": {}
       }
     }
   }

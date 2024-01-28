@@ -18,7 +18,7 @@
     }
   },
   "auth": {
-    "amplidroid89e65c1e": {
+    "amplidroid58a98459": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -31,7 +31,7 @@
           "passwordPolicyMinLength": 8
         },
         "signupAttributes": [
-          "EMAIL"
+          "PHONE_NUMBER"
         ],
         "socialProviders": [],
         "usernameAttributes": [

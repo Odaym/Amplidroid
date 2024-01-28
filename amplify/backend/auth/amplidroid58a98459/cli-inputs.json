@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "amplidroid89e65c1e_identitypool_89e65c1e",
+    "identityPoolName": "amplidroid58a98459_identitypool_58a98459",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "amplid89e65c1e",
-    "userPoolName": "amplidroid89e65c1e_userpool_89e65c1e",
+    "resourceNameTruncated": "amplid58a98459",
+    "userPoolName": "amplidroid58a98459_userpool_58a98459",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -20,7 +20,7 @@
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-      "email"
+      "phone_number"
     ],
     "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
@@ -31,15 +31,16 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "amplid89e65c1e_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "amplid58a98459_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "89e65c1e",
-    "resourceName": "amplidroid89e65c1e",
+    "sharedId": "58a98459",
+    "resourceName": "amplidroid58a98459",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "default",
     "usernameAttributes": [
       "phone_number"
     ],
+    "triggers": {},
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
